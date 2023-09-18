@@ -17,6 +17,7 @@
 import yfinance as yf
 
 def selectStockTicker():
+    # function returns list of valid stock ticker objects
     tickers = []
     print("Enter 5  stocks to graph:")
     for i in range(5):
@@ -32,18 +33,26 @@ def selectStockTicker():
     return tickers
 
 def getHistInfo(stockList):
+    # function returns list of stock ticker history for last 10 days
     hist = []
     for i in range(5):
         history = stockList[i].history(period="10d")
         hist.append(history)
     return hist
 
-
+def getClosingPrice(histList):
+    # function returns list of stocks prices for last 10 days
+    priceList = []
+    for date in histList:
+        prices = []
+        for price in date['Close']:
+            prices.append(price)
+        priceList.append(prices)
+    return priceList
 
 stockList = selectStockTicker()
-#print(stockList)
-histList = getHistInfo(stockList)
-#print(histList)
 
-# get historical market data
-#hist = msft.history(period="1mo")
+histList = getHistInfo(stockList)
+
+priceList = getClosingPrice(histList)
+
