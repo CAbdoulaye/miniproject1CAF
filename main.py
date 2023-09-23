@@ -68,25 +68,29 @@ def listToNumpyArray(priceList):
 
     return listOfNumpyArrays
 
-def plotAndShowGraph(stockArrList, names):
+def plotAndShowGraphAndTurnToPNG(stockArrList, names):
     # function to plot and show array
     i = 0
     xAxes = numpy.array([1,2,3,4,5,6,7,8,9,10])
     for arr in stockArrList:
+        # Plot each graph
         sortedPrices = list(arr)
         sortedPrices.sort()
         min = sortedPrices[0]
         max = sortedPrices[-1]
         plt.plot(xAxes, arr)
-        plt.axis([1, 10, (min - 2), (max + 2)])
+        plt.axis([1, 10, (min - (max - min) / 2), (max + (max - min) / 2)])
         plt.xlabel("Days")
         plt.ylabel("Closing Price")
         plt.title("Close price for " + names[i])
+
+        # Save graphs to png files
+        fileName = "Charts/" + names[i] + ".png"
+        plt.savefig(fileName)
+
+        #show graph
         plt.show()
         i = i + 1
-
-
-
 
 
 stockNames = ["MSFT", "DELL", "AAPL", "NKE", "SONY"]
