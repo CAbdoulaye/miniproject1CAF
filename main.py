@@ -16,6 +16,8 @@ import numpy
 import yfinance as yf
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
+
 
 
 def selectStockTicker(list):
@@ -92,6 +94,10 @@ def plotAndShowGraphAndTurnToPNG(stockArrList, names):
         plt.show()
         i = i + 1
 
+try:
+    Path("Charts").mkdir()
+except:
+    pass
 
 stockNames = ["MSFT", "DELL", "AAPL", "NKE", "SONY"]
 
@@ -103,5 +109,5 @@ priceList = getClosingPrice(histList)
 
 listOfArrays = listToNumpyArray(priceList)
 
-plotAndShowGraph(listOfArrays, stockNames)
+plotAndShowGraphAndTurnToPNG(listOfArrays, stockNames)
 
