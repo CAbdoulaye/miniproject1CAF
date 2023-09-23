@@ -94,6 +94,7 @@ def plotAndShowGraphAndTurnToPNG(stockArrList, names):
         plt.show()
         i = i + 1
 
+# Created Chart Folder if it doesn't exist already
 try:
     Path("Charts").mkdir()
 except:
