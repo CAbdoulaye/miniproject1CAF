@@ -6,8 +6,7 @@
 #(10/10 points) There should be a minimum of 5 commits on your project, be sure to commit often!
 #(10/10 points) I will be checking out the master branch of your project. Please be sure to include a requirements.txt file which contains all the packages that need installed. You can create this fille with the output of pip freeze at the terminal prompt.
 #(20/20 points) There should be a README.md file in your project that explains what your project is, how to install the pip requirements, and how to execute the program. Please use the GitHub flavor of Markdown.
-
-
+import numpy
 # INF601 - Advanced Programming in Python
 # Cheikh Abdoulaye Faye
 # Mini Project 1
@@ -19,9 +18,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def selectStockTicker():
+def selectStockTicker(list):
     # function returns list of valid stock ticker objects
     tickers = []
+    '''
     print("Enter 5  stocks to graph:")
     for i in range(5):
         while True:
@@ -33,7 +33,13 @@ def selectStockTicker():
                 break
             except:
                 print("The stock ticker you have entered is not valid")
+    '''
+    for name in list:
+        stock = yf.Ticker(name)
+        tickers.append(stock)
     return tickers
+
+
 
 def getHistInfo(stockList):
     # function returns list of stock ticker history for last 10 days
@@ -49,13 +55,49 @@ def getClosingPrice(histList):
     for date in histList:
         prices = []
         for price in date['Close']:
-            prices.append(price)
+            prices.append(round(price, 2))
         priceList.append(prices)
     return priceList
 
-stockList = selectStockTicker()
+def listToNumpyArray(priceList):
+    # function to return list of prices in numpy array
+    listOfNumpyArrays = []
+    for companyStock in priceList:
+        arr = numpy.array(companyStock)
+        listOfNumpyArrays.append(arr)
+
+    return listOfNumpyArrays
+
+def plotAndShowGraph(stockArrList, names):
+    # function to plot and show array
+    i = 0
+    xAxes = numpy.array([1,2,3,4,5,6,7,8,9,10])
+    for arr in stockArrList:
+        sortedPrices = list(arr)
+        sortedPrices.sort()
+        min = sortedPrices[0]
+        max = sortedPrices[-1]
+        plt.plot(xAxes, arr)
+        plt.axis([1, 10, (min - 2), (max + 2)])
+        plt.xlabel("Days")
+        plt.ylabel("Closing Price")
+        plt.title("Close price for " + names[i])
+        plt.show()
+        i = i + 1
+
+
+
+
+
+stockNames = ["MSFT", "DELL", "AAPL", "NKE", "SONY"]
+
+stockList = selectStockTicker(stockNames)
 
 histList = getHistInfo(stockList)
 
 priceList = getClosingPrice(histList)
+
+listOfArrays = listToNumpyArray(priceList)
+
+plotAndShowGraph(listOfArrays, stockNames)
 
